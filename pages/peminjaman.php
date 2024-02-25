@@ -161,6 +161,30 @@ $db->close();
                                                     </button>
                                                 </td>
                                             </tr>
+                                        <?php } else if ($data_peminjaman['status_peminjaman'] == "Dikembalikan") { ?>
+                                                <tr>
+                                                    <td>
+                                                    <?= $data_peminjaman['buku_id'] ?>
+                                                    </td>
+                                                    <td>
+                                                    <?= $data_peminjaman['judul'] ?>
+                                                    </td>
+                                                    <td>
+                                                    <?= $data_peminjaman['penulis'] ?>
+                                                    </td>
+                                                    <td>
+                                                    <?= $data_peminjaman['tanggal_pengembalian'] ?>
+                                                    </td>
+                                                    <td>
+                                                    <?= $data_peminjaman['status_peminjaman'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary mt-2 btn-block" data-toggle="modal"
+                                                            data-target="#modal-lihat-riwayat-<?= $data_peminjaman['buku_id'] ?>">
+                                                            Lihat
+                                                        </button>
+                                                    </td>
+                                                </tr>
                                         <?php } ?>
                                         <!-- modal kembalikan buku -->
                                         <div class="modal fade" id="modal-kembalikan-<?= $data_peminjaman['buku_id'] ?>">
@@ -178,7 +202,7 @@ $db->close();
                                                             <p class="text-center p-3">Anda yakin ingin mengembalikan buku
                                                                 <?= $data_peminjaman['buku_id'] ?>
                                                             </p>
-                                                            <input type="text" name="kembalikan_buku_id"
+                                                            <input type="hidden" name="kembalikan_buku_id"
                                                                 value="<?= $data_peminjaman['buku_id'] ?>">
                                                             <div class="card-footer">
                                                                 <button type="submit" class="btn btn-primary"
@@ -189,113 +213,53 @@ $db->close();
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php } ?>
-                                <?php } else { ?>
-                                    <tr>
-                                        <td colspan="5" class="text-center">
-                                            Kamu belum pernah meminjam buku
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- end card daftar buku -->
-
-                <!-- riwayat peminjaman -->
-                <div class="card">
-                    <div class="card-header bg-secondary">
-                        <h3 class="card-title">Riwayat Peminjaman Buku</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID Buku</th>
-                                    <th>Judul</th>
-                                    <th>Penulis</th>
-                                    <th>Tanggal Pengembalian</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($data_riwayat_peminjaman = $result_riwayat_peminjaman->fetch_assoc()) { ?>
-                                    <?php if ($data_riwayat_peminjaman['status_peminjaman'] == "Dikembalikan") { ?>
-                                        <tr>
-                                            <td>
-                                                <?= $data_riwayat_peminjaman['buku_id'] ?>
-                                            </td>
-                                            <td>
-                                                <?= $data_riwayat_peminjaman['judul'] ?>
-                                            </td>
-                                            <td>
-                                                <?= $data_riwayat_peminjaman['penulis'] ?>
-                                            </td>
-                                            <td>
-                                                <?= $data_riwayat_peminjaman['tanggal_pengembalian'] ?>
-                                            </td>
-                                            <td>
-                                                <?= $data_riwayat_peminjaman['status_peminjaman'] ?>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger mt-2 btn-block" data-toggle="modal"
-                                                    data-target="#modal-hapus-<?= $data_riwayat_peminjaman['buku_id'] ?>">
-                                                    Hapus
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <!-- modal hapus riwayat buku -->
-                                        <div class="modal fade" id="modal-hapus-<?= $data_riwayat_peminjaman['buku_id'] ?>">
+                                        <!-- modal kembalikan buku end -->
+                                        <!-- modal lihat riwayat -->
+                                        <div class="modal fade" id="modal-lihat-riwayat-<?= $data_peminjaman['buku_id'] ?>">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="card card-primary">
                                                         <div class="card-header">
-                                                            <h3 class="card-title">Hapus Riwayat Buku</h3>
+                                                            <h3 class="card-title">Lihat Riwayat</h3>
                                                             <button type="button" class="close" data_buku-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <form action="peminjaman.php" method="POST">
-                                                            <p class="text-center p-3">Anda yakin ingin menghapus buku
-                                                                <?= $data_riwayat_peminjaman['buku_id'] ?>
-                                                            </p>
-                                                            <input type="hidden" name="hapus_riwayat_buku_id"
-                                                                value="<?= $data_riwayat_peminjaman['buku_id'] ?>">
-                                                            <div class="card-footer">
-                                                                <button type="submit" class="btn btn-danger"
-                                                                    name="hapus_riwayat_buku">Hapus</button>
-                                                            </div>
-                                                        </form>
-
+                                                        <div>
+                                                            <p></p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php } ?>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <!-- /.card-body -->
+                            </div>
+                            <!-- modal lihat riwayat end -->
+                        <?php } ?>
+                    <?php } else { ?>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Kamu belum pernah meminjam buku
+                            </td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                    </table>
                 </div>
-
-            </section>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
-        <?php include "../layout/footer.php"; ?>
+        <!-- end card daftar buku -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <?php include "../layout/footer.php"; ?>
 
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
 
