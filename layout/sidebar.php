@@ -62,7 +62,7 @@ $_SESSION['username'] = $data_user['username'];
                     </li>
                     <li class="nav-item">
                         <a href="../pages/kelola_buku.php" class="nav-link">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <i class="fa fa-cogs" aria-hidden="true"></i>
                             <p>Kelola Buku</p>
                         </a>
                     </li>
