@@ -92,9 +92,14 @@ $_SESSION['username'] = $data_user['username'];
 include "../service/config.php";
 
 $role = $_SESSION['role'];
-if ($role === 'Admin') { ?>
+if ($role === 'Admin' || 'Petugas') { ?>
     <script>
         let adminSidebar = document.getElementById("admin-menu");
         adminSidebar.style.display = "block";
     </script>
 <?php } ?>
+<!-- else if ($role === 'Petugas') {
+        <script>
+            let adminSidebar = document.getElementById("admin-menu");
+            adminSidebar.style.display = "block";
+        </script> -->

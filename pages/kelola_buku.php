@@ -12,25 +12,6 @@ $message_peminjaman = "";
 $sql_buku = "SELECT * FROM buku";
 $result_buku = $db->query($sql_buku);
 
-// pinjam buku
-if (isset($_POST["pinjam_buku"])) {
-    $user_id = $_SESSION['user_id'];
-    $buku_id = $_POST['buku_id'];
-    $tanggal_peminjaman = date('Y-m-d');
-    $tanggal_pengembalian = $_POST['tanggal_pengembalian'];
-    $status_peminjaman = "Dipinjam";
-
-    $tanggal_pengembalian_formatted = date('Y-m-d', strtotime($tanggal_pengembalian));
-
-    $sql_pinjam = "INSERT INTO peminjaman (user_id, buku_id, tanggal_peminjaman, tanggal_pengembalian, status_peminjaman) VALUES ('$user_id', '$buku_id', '$tanggal_peminjaman', '$tanggal_pengembalian_formatted', '$status_peminjaman')";
-    if ($db->query($sql_pinjam)) {
-        header('location: peminjaman.php');
-    } else {
-        header('location: buku.php');
-    }
-    $db->close();
-}
-
 // tambah buku
 if (isset($_POST['tambah_buku'])) {
     $judul_buku = $_POST['judul-buku'];
@@ -43,6 +24,23 @@ if (isset($_POST['tambah_buku'])) {
     if ($result = $db->query($sql_tambah_buku)) {
         header("location: kelola_buku.php");
     }
+    $db->close();
+
+}
+
+// edit buku
+if (isset($_POST['simpan_edit'])) {
+    $buku_id_edit = $_POST["buku_id_edit"];
+    $edited_judul = $_POST["edit-judul-buku"];
+    // $edited_sampul = $_POST["edit-sampul-buku"];
+    $edited_penulis = $_POST["edit-penulis-buku"];
+    $edited_penerbit = $_POST["edit-penerbit-buku"];
+    $edited_tahun_terbit = $_POST["edit-tahun-terbit-buku"];
+    $edited_deskripsi = $_POST["edit-deskripsi-buku"];
+
+    $sql_edit_buku = "UPDATE buku SET judul='$edited_judul', penulis='$edited_penulis', penerbit='$edited_penerbit', tahun_terbit='$edited_tahun_terbit', deskripsi='$edited_deskripsi' WHERE buku_id='$buku_id_edit'";
+    $db->query($sql_edit_buku);
+    $db->close();
 }
 
 // hapus buku 
@@ -53,6 +51,7 @@ if (isset($_POST['hapus_buku'])) {
 
     $result_hapus_buku_peminjaman = $db->query($sql_delete_buku_in_peminjaman);
     $result_hapus_buku = $db->query($sql_delete_buku_in_daftar);
+    $db->close();
 }
 
 if (isset($_POST['logout'])) {
@@ -60,6 +59,7 @@ if (isset($_POST['logout'])) {
     session_destroy();
     header('location: ../index.php');
 }
+
 
 ?>
 
@@ -145,6 +145,70 @@ if (isset($_POST['logout'])) {
                         data-target="#modal-tambah-buku">
                         Tambah Buku
                     </button>
+                    <!-- modal tambah buku -->
+                    <div class="modal fade" id="modal-tambah-buku">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h4 class="modal-title">Tambah Buku</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- tambah buku -->
+                                    <!-- form start -->
+                                    <form action="kelola_buku.php" method="POST">
+                                        <div class="form-group">
+                                            <label for="inputId">ID Buku</label>
+                                            <input type="text" class="form-control" id="inputId" value="Auto Generate"
+                                                readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputJudul">Judul</label>
+                                            <input type="text" name="judul-buku" class="form-control" id="inputJudul"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">Cover</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" name="gambar-buku" class="custom-file-input"
+                                                        id="exampleInputFile">
+                                                    <label class="custom-file-label" for="exampleInputFile">Choose
+                                                        file</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPenulis">Penulis</label>
+                                            <input type="text" name="penulis-buku" class="form-control"
+                                                id="inputPenulis" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPenerbit">Penerbit</label>
+                                            <input type="text" name="penerbit-buku" class="form-control" id="inputJudul"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputTahunTerbit">Tahun Terbit</label>
+                                            <input type="date" name="tahun-terbit-buku" class="form-control"
+                                                id="inputPenulis" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputTahunTerbit">Deskripsi</label>
+                                            <textarea class="form-control" name="deskripsi-buku"
+                                                style="min-height: 200px; max-height: 200px; resize: none;"
+                                                rows="3"></textarea>
+                                        </div>
+                                        <button type="submit" name="tambah_buku"
+                                            class="btn btn-primary">Tambahkan</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal tambah buku end -->
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table class="table table-bordered table-hover">
@@ -195,7 +259,7 @@ if (isset($_POST['logout'])) {
                                     <div class="modal fade" id="modal-<?= $data_buku['buku_id'] ?>">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
-                                                <div class="modal-header">
+                                                <div class="modal-header bg-primary">
                                                     <h4 class="modal-title">Lihat Buku</h4>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -235,11 +299,80 @@ if (isset($_POST['logout'])) {
                                     </div>
                                     <!-- modal lihat buku end -->
 
+                                    <!-- modal edit buku -->
+                                    <div class="modal fade" id="modal-edit-<?= $data_buku['buku_id'] ?>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-warning">
+                                                    <h4 class="modal-title">Edit Buku</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- form start -->
+                                                    <form action="kelola_buku.php" method="POST">
+                                                        <div class="form-group">
+                                                            <label for="inputId">ID Buku</label>
+                                                            <input type="text" name="buku_id_edit" class="form-control"
+                                                                id="inputId" value="<?= $data_buku["buku_id"] ?>" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="editJudul">Judul</label>
+                                                            <input type="text" name="edit-judul-buku" class="form-control"
+                                                                id="editJudul" value="<?= $data_buku["judul"] ?>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputFile">Cover</label>
+                                                            <div class="input-group">
+                                                                <div class="custom-file">
+                                                                    <input type="file" name="gambar-buku"
+                                                                        class="custom-file-input" id="exampleInputFile">
+                                                                    <label class="custom-file-label"
+                                                                        for="exampleInputFile">Choose
+                                                                        file</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="editPenulis">Penulis</label>
+                                                            <input type="text" name="edit-penulis-buku" class="form-control"
+                                                                id="editPenulis" value="<?= $data_buku["penulis"] ?>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="editPenerbit">Penerbit</label>
+                                                            <input type="text" name="edit-penerbit-buku"
+                                                                class="form-control" id="editPenerbit"
+                                                                value="<?= $data_buku["penerbit"] ?>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="editTahunTerbit">Tahun Terbit</label>
+                                                            <input type="date" name="edit-tahun-terbit-buku"
+                                                                class="form-control" id="editTahunTerbit"
+                                                                value="<?= $data_buku["tahun_terbit"] ?>" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="editDeskripsi">Deskripsi</label>
+                                                            <textarea class="form-control" id="editDeskripsi"
+                                                                name="edit-deskripsi-buku"
+                                                                style="min-height: 200px; max-height: 200px; resize: none;"
+                                                                rows="3"><?= $data_buku["deskripsi"] ?></textarea>
+                                                        </div>
+                                                        <button type="submit" name="simpan_edit"
+                                                            class="btn btn-primary">Simpan</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- modal edit buku end -->
+
                                     <!-- modal delete buku -->
                                     <div class="modal fade" id="modal-delete-<?= $data_buku['buku_id'] ?>">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <div class="modal-header">
+                                                <div class="modal-header bg-danger">
                                                     <h4 class="modal-title">Hapus Buku</h4>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -269,82 +402,7 @@ if (isset($_POST['logout'])) {
                                 <?php } ?>
                             </tbody>
                         </table>
-                        <!-- modal tambah buku -->
-                        <div class="modal fade" id="modal-tambah-buku">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Tambah Buku</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- tambah buku -->
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h3 class="card-title">Tambah Buku Baru</h3>
-                                            </div>
-                                            <!-- form start -->
-                                            <form action="kelola_buku.php" method="POST">
-                                                <div class="card-body">
-                                                    <div class="form-group">
-                                                        <label for="inputId">ID Buku</label>
-                                                        <input type="text" class="form-control" id="inputId"
-                                                            value="Auto Generate" readonly>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputJudul">Judul</label>
-                                                        <input type="text" name="judul-buku" class="form-control"
-                                                            id="inputJudul" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputFile">Cover</label>
-                                                        <div class="input-group">
-                                                            <div class="custom-file">
-                                                                <input type="file" name="gambar-buku"
-                                                                    class="custom-file-input" id="exampleInputFile">
-                                                                <label class="custom-file-label"
-                                                                    for="exampleInputFile">Choose
-                                                                    file</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputPenulis">Penulis</label>
-                                                        <input type="text" name="penulis-buku" class="form-control"
-                                                            id="inputPenulis" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputPenerbit">Penerbit</label>
-                                                        <input type="text" name="penerbit-buku" class="form-control"
-                                                            id="inputJudul" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputTahunTerbit">Tahun Terbit</label>
-                                                        <input type="date" name="tahun-terbit-buku" class="form-control"
-                                                            id="inputPenulis" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputTahunTerbit">Deskripsi</label>
-                                                        <textarea class="form-control" name="deskripsi-buku"
-                                                            style="min-height: 200px; max-height: 200px; resize: none;"
-                                                            rows="3"></textarea>
-                                                    </div>
-                                                </div>
-                                                <!-- /.card-body -->
 
-                                                <div class="card-footer">
-                                                    <button type="submit" name="tambah_buku"
-                                                        class="btn btn-primary">Tambahkan</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- modal tambah buku end -->
                     </div>
                     <!-- /.card-body -->
                 </div>

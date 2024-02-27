@@ -113,6 +113,7 @@ if (isset($_POST['daftar'])) {
                         <div class="input-group-append">
                             <select name="role" class="form-control select2" style="width: 100%;">
                                 <option selected="selected">User</option>
+                                <option>Petugas</option>
                                 <option>Admin</option>
                             </select>
                             <div class="input-group-text">

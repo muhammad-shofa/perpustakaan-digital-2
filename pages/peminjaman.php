@@ -25,19 +25,6 @@ if (isset($_POST['kembalikan_buku'])) {
     }
 }
 
-// get data riwayat buku
-$sql_riwayat_peminjaman = "SELECT peminjaman.*, buku.judul, buku.penulis, buku.penerbit, buku.tahun_terbit FROM peminjaman INNER JOIN buku ON peminjaman.buku_id = buku.buku_id WHERE peminjaman.user_id = $user_id AND peminjaman.status_peminjaman = 'Dikembalikan'";
-$result_riwayat_peminjaman = $db->query($sql_riwayat_peminjaman);
-
-// hapus riwayat buku
-if (isset($_POST['hapus_riwayat_buku'])) {
-    $hapus_buku_id = $_POST['hapus_riwayat_buku_id'];
-    $sql_hapus_riwayat = "DELETE FROM peminjaman WHERE buku_id = $hapus_buku_id AND user_id = $user_id AND status_peminjaman = 'Dikembalikan'";
-    $result_hapus_riwayat = $db->query($sql_hapus_riwayat);
-    if ($result_hapus_riwayat = $db->query($sql_hapus_riwayat)) {
-    }
-}
-
 $db->close();
 
 ?>
@@ -179,9 +166,10 @@ $db->close();
                                                     <?= $data_peminjaman['status_peminjaman'] ?>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary mt-2 btn-block" data-toggle="modal"
-                                                            data-target="#modal-lihat-riwayat-<?= $data_peminjaman['buku_id'] ?>">
-                                                            Lihat
+                                                        <button type="button" class="btn btn-secondary mt-2 btn-block"
+                                                            data-toggle="modal"
+                                                            data-target="#modal-detail-riwayat-<?= $data_peminjaman['buku_id'] ?>">
+                                                            Detail
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -214,27 +202,76 @@ $db->close();
                                             </div>
                                         </div>
                                         <!-- modal kembalikan buku end -->
-                                        <!-- modal lihat riwayat -->
-                                        <div class="modal fade" id="modal-lihat-riwayat-<?= $data_peminjaman['buku_id'] ?>">
+                                        <!-- modal detail riwayat -->
+                                        <div class="modal fade" id="modal-detail-riwayat-<?= $data_peminjaman['buku_id'] ?>">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="card card-primary">
                                                         <div class="card-header">
-                                                            <h3 class="card-title">Lihat Riwayat</h3>
+                                                            <h3 class="card-title">Riwayat Peminjaman</h3>
                                                             <button type="button" class="close" data_buku-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <div>
-                                                            <p></p>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="inputId">ID Buku</label>
+                                                                <input type="text" class="form-control" id="inputId"
+                                                                    value="<?= $data_peminjaman['buku_id'] ?>" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="inputJudul">Judul</label>
+                                                                <input type="text" name="judul-buku" class="form-control"
+                                                                    id="inputJudul" value="<?= $data_peminjaman['judul'] ?>"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="inputPenulis">Penulis</label>
+                                                                <input type="text" name="penulis-buku" class="form-control"
+                                                                    id="inputPenulis" value="<?= $data_peminjaman['penulis'] ?>"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="inputPenerbit">Penerbit</label>
+                                                                <input type="text" name="penerbit-buku" class="form-control"
+                                                                    id="inputJudul" value="<?= $data_peminjaman['penerbit'] ?>"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="inputTahunTerbit">Tahun Terbit</label>
+                                                                <input type="date" name="tahun-terbit-buku" class="form-control"
+                                                                    id="inputPenulis"
+                                                                    value="<?= $data_peminjaman['tahun_terbit'] ?>" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="inputTahunTerbit">Tanggal Peminjaman</label>
+                                                                <input type="datetime" name="tahun-terbit-buku"
+                                                                    class="form-control" id="inputPenulis"
+                                                                    value="<?= $data_peminjaman['tanggal_peminjaman'] ?>"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="inputTahunTerbit">Tanggal Pengembalian</label>
+                                                                <input type="date" name="tahun-terbit-buku" class="form-control"
+                                                                    id="inputPenulis"
+                                                                    value="<?= $data_peminjaman['tanggal_pengembalian'] ?>"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="inputTahunTerbit">Status Peminjaman</label>
+                                                                <input type="text" name="tahun-terbit-buku"
+                                                                    class="form-control is-valid" id="inputPenulis"
+                                                                    value="<?= $data_peminjaman['status_peminjaman'] ?>"
+                                                                    readonly>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                             </div>
-                            <!-- modal lihat riwayat end -->
+                            <!-- modal detail riwayat end -->
                         <?php } ?>
                     <?php } else { ?>
                         <tr>

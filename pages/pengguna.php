@@ -28,10 +28,6 @@ if (isset($_POST['simpan_edit'])) {
 
 $db->close();
 
-// if (isset()) {
-
-// }
-
 ?>
 
 <!DOCTYPE html>
@@ -260,14 +256,18 @@ $db->close();
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#profile-preview-<?= $data_users['user_id'] ?>">
+                                                    data-target="#detail-profile-<?= $data_users['user_id'] ?>">
                                                     Detail
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#hapus-profile-<?= $data_users['user_id'] ?>">
+                                                    Hapus
                                                 </button>
                                             </td>
                                         </tr>
-                                        <!-- modal -->
-                                        <div class="modal fade" id="profile-preview-<?= $data_users['user_id'] ?>">
-                                            <div class="modal-dialog modal-xl">
+                                        <!-- modal detail pengguna -->
+                                        <div class="modal fade" id="detail-profile-<?= $data_users['user_id'] ?>">
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title">Detail user</h4>
@@ -285,16 +285,15 @@ $db->close();
                                                                         <div class="profile-img">
                                                                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
                                                                                 alt="" />
-
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="profile-head">
                                                                             <h5>
-                                                                                <?= $data_user['username'] ?>
+                                                                                <?= $data_users['username'] ?>
                                                                             </h5>
                                                                             <h6>
-                                                                                <?= $data_user['role'] ?>
+                                                                                <?= $data_users['role'] ?>
                                                                             </h6>
                                                                             <br>
                                                                             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -307,7 +306,6 @@ $db->close();
                                                                             </ul>
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-md-4">
@@ -322,7 +320,7 @@ $db->close();
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <p>
-                                                                                            <?= $data_user['username'] ?>
+                                                                                            <?= $data_users['username'] ?>
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
@@ -332,7 +330,7 @@ $db->close();
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <p>
-                                                                                            <?= $data_user['nama_lengkap'] ?>
+                                                                                            <?= $data_users['nama_lengkap'] ?>
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
@@ -341,7 +339,7 @@ $db->close();
                                                                                         <label>Email</label>
                                                                                     </div>
                                                                                     <div class="col-md-6">
-                                                                                        <?= $data_user['email'] ?>
+                                                                                        <?= $data_users['email'] ?>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
@@ -349,7 +347,7 @@ $db->close();
                                                                                         <label>Alamat</label>
                                                                                     </div>
                                                                                     <div class="col-md-6">
-                                                                                        <?= $data_user['alamat'] ?>
+                                                                                        <?= $data_users['alamat'] ?>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
@@ -358,55 +356,6 @@ $db->close();
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <?= $_SESSION['role'] ?>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="tab-pane fade" id="profile"
-                                                                                role="tabpanel" aria-labelledby="profile-tab">
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <label>Experience</label>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <p>Expert</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <label>Hourly Rate</label>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <p>10$/hr</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <label>Total Projects</label>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <p>230</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <label>English Level</label>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <p>Expert</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <label>Availability</label>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <p>6 months</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-12">
-                                                                                        <label>Your Bio</label><br />
-                                                                                        <p>Your detail description</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -419,7 +368,33 @@ $db->close();
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- modal end -->
+                                        <!-- modal detail pengguna end -->
+                                        <!-- modal hapus pengguna  -->
+                                        <div class="modal fade" id="hapus-profile-<?= $data_users['user_id'] ?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Detail user</h4>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- profile -->
+                                                        <div class="container emp-profile">
+                                                            <form action="profile.php" method="POST">
+                                                                <p>Apakah anda yakin ingin menghapus pengguna ini?</p>
+                                                                <button type="submit" class="btn-danger rounded">
+                                                                    Hapus
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- modal hapus pengguna end -->
                                     <?php } ?>
                                 <?php } else { ?>
                                     <tr>

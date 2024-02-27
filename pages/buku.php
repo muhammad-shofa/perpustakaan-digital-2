@@ -158,7 +158,7 @@ if (isset($_POST['logout'])) {
 
                                     <!-- modal -->
                                     <div class="modal fade" id="modal-<?= $data_buku['buku_id'] ?>">
-                                        <div class="modal-dialog modal-xl">
+                                        <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h4 class="modal-title">Lihat Buku</h4>

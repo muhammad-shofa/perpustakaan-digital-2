@@ -12,13 +12,11 @@ $result_user = $db->query($sql_user);
 $data_user = $result_user->fetch_assoc();
 $_SESSION['username'] = $data_user['username'];
 
-// 
-
 // edit
 if (isset($_POST['simpan_edit'])) {
-    if (isset($_FILES['photo'])) {
+    if (!empty($_FILES['photo']['tmp_name'])) {
         $check_photo_profile = $_FILES['photo']['tmp_name'];
-        $valid_photo_profile = file_get_contents($check_photo);
+        $valid_photo_profile = file_get_contents($check_photo_profile);
     }
 
     $edit_username = $_POST['edit_username'];
@@ -225,7 +223,8 @@ $db->close();
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="profile-img">
-                                    <img src="data:image/jpeg;base64,<?= base64_encode($data_user['photo_profile']) ?>" alt="" />
+                                    <img src="data:image/jpeg;base64,<?= base64_encode($data_user['photo_profile']) ?>"
+                                        alt="" />
                                     <div class="file btn btn-lg btn-primary ">
                                         Change Photo
                                         <input type="file" name="file" />
@@ -381,7 +380,7 @@ $db->close();
                             </div>
                             <div class="modal-body">
                                 <!-- form start -->
-                                <form id="quickForm" action="profile.php" method="POST">
+                                <form id="quickForm" action="profile.php" method="POST" enctype="multipart/form-data">
                                     <div class="card-body">
                                         <!-- <div class="form-group">
                                             <label for="input-photo">Photo</label>
